@@ -23,8 +23,9 @@ public class staffAttack : MonoBehaviour
     Vector3 onAttackRot;
 
     Players playerEnemy;
-    Players thisPlayer;
+    public Players thisPlayer;
 
+    Camera camera;
     public CameraFollow cam;
 
     BoxCollider2D bc2D;
@@ -46,6 +47,9 @@ public class staffAttack : MonoBehaviour
 
         thisPlayer = GetComponentInParent<Players>();
 
+        camera = FindAnyObjectByType<Camera>();
+        cam = camera.GetComponent<CameraFollow>();
+
         transform.eulerAngles = onBackRot;
         sprite.sortingOrder = -1;
     }
@@ -63,7 +67,7 @@ public class staffAttack : MonoBehaviour
     void Attack()
     {
         //player1 controls
-        if (this.gameObject.CompareTag("Staff1"))
+        if (thisPlayer.CompareTag("Player1"))
         {
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling)
             {
@@ -79,7 +83,7 @@ public class staffAttack : MonoBehaviour
         }
 
         //player2 controls
-        if (this.gameObject.CompareTag("Staff2"))
+        if (thisPlayer.CompareTag("Player2"))
         {
             if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling)
             {
