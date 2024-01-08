@@ -36,13 +36,14 @@ public class Fists : MonoBehaviour
         thisPlayer = GetComponentInParent<Players>();
     }
 
-    void Update()
+    private void Update()
     {
         Attack();
     }
 
     private void FixedUpdate()
     {
+        
         Timers();
     }
 

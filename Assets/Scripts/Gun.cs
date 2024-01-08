@@ -27,6 +27,10 @@ public class Gun : MonoBehaviour
     public GameObject sprite;
     public GameObject bullet;
 
+    public GameObject hand;
+    SpriteRenderer handSprite;
+    SpriteRenderer parentSprite;
+
     Bullet bulletScr;
 
     Camera camera;
@@ -49,6 +53,10 @@ public class Gun : MonoBehaviour
         cam = camera.GetComponent<CameraFollow>();
 
         thisPlayer = GetComponentInParent<Players>();
+
+        handSprite = hand.GetComponent<SpriteRenderer>();
+        parentSprite = GetComponentInParent<SpriteRenderer>();
+        handSprite.color = parentSprite.color;
     }
 
     void Update()

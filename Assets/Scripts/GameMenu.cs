@@ -19,6 +19,7 @@ public class GameMenu : MonoBehaviour
     Fists player2F;
 
     public GameObject staff;
+    public GameObject gun;
 
     bool p1Select;
     bool p2Select;
@@ -61,6 +62,24 @@ public class GameMenu : MonoBehaviour
         if (!p2Select)
         {
             Instantiate(staff, player2.transform);
+            p2Select = true;
+        }
+    }
+
+    public void P1Gun()
+    {
+        if (!p1Select)
+        {
+            Instantiate(gun, player1.transform);
+            p1Select = true;
+        }
+    }
+
+    public void P2Gun()
+    {
+        if (!p2Select)
+        {
+            Instantiate(gun, player2.transform);
             p2Select = true;
         }
     }

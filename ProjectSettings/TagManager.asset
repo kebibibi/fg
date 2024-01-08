@@ -12,6 +12,7 @@ TagManager:
   - Staff1
   - Staff2
   - Platform
+  - Hand
   layers:
   - Default
   - TransparentFX
