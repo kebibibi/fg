@@ -33,10 +33,9 @@ public class Bullet : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        rb2D.AddForce(Vector2.right * bulletSpeed + bulletDirY/2, ForceMode2D.Impulse);
-
+        rb2D.AddForce(Vector2.right * bulletSpeed + bulletDirY * 4, ForceMode2D.Impulse);
         Timers();
     }
 
@@ -75,7 +74,7 @@ public class Bullet : MonoBehaviour
 
             playerEnemy.enabled = false;
             playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-            playerEnemy.playerHealth -= playerEnemy.fistDamage;
+            playerEnemy.playerHealth -= playerEnemy.abilityDamage;
 
             cam.shakingMuch = 0.35f;
 

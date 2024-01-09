@@ -23,7 +23,8 @@ public class Players : MonoBehaviour
     public float dashForce;
     public float dashStamina;
     public float playerHealth;
-    float timer;
+    float dashRefreshTimer;
+    public float dashTimer;
 
     bool facingRight = true;
     bool grounded;
@@ -155,21 +156,31 @@ public class Players : MonoBehaviour
     {
         if (dash)
         {
-            playerSpeed = dashForce;
-            dashStamina--;
-            timer = 1;
+            if (dashTimer > 0)
+            {
+                dashTimer -= Time.deltaTime;
+                playerSpeed = dashForce;
+            }
+
+            if(dashTimer <= 0)
+            {
+                playerSpeed = 0;
+                dashStamina--;
+                dashRefreshTimer = 1;
+                dash = false;
+            }
         }
 
         if (dashStamina < 3)
         {
-            if (timer > 0)
+            if (dashRefreshTimer > 0)
             {
-                timer -= Time.deltaTime;
+                dashRefreshTimer -= Time.deltaTime;
             }
-            else if (timer <= 0)
+            else if (dashRefreshTimer <= 0)
             {
                 dashStamina++;
-                timer = 1;
+                dashRefreshTimer = 1;
             }
         }
     }

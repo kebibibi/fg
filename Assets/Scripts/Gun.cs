@@ -14,10 +14,7 @@ public class Gun : MonoBehaviour
     bool attacking;
 
     Vector2 attack;
-    Vector2 nAttack;
     Vector2 attackUP;
-
-    Vector2 bulletStart;
 
     Vector3 upAttackRot;
     Vector3 lowAttackRot;
@@ -29,6 +26,11 @@ public class Gun : MonoBehaviour
 
     Bullet bulletScr;
 
+    //hand color
+    SpriteRenderer playerSprite;
+    SpriteRenderer gunSprite;
+    public GameObject hand;
+
     Camera camera;
     public CameraFollow cam;
 
@@ -38,7 +40,7 @@ public class Gun : MonoBehaviour
         attack = new Vector2(1f, 0.4f);
         attackUP = new Vector2(1f, 1f);
 
-        upAttackRot = new Vector3(0, 0, 35);
+        upAttackRot = new Vector3(0, 0, 30);
         lowAttackRot = new Vector3(0, 0, 0);
 
         sprite.SetActive(false);
@@ -47,15 +49,15 @@ public class Gun : MonoBehaviour
         cam = camera.GetComponent<CameraFollow>();
 
         thisPlayer = GetComponentInParent<Players>();
+
+        gunSprite = hand.GetComponent<SpriteRenderer>();
+        playerSprite = GetComponentInParent<SpriteRenderer>();
+        gunSprite.color = playerSprite.color;
     }
 
-    void Update()
+    private void Update()
     {
         Attack();
-    }
-
-    private void FixedUpdate()
-    {
         Timers();
     }
 
@@ -66,21 +68,25 @@ public class Gun : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
-                AttackSet();
-
-                bulletScr.bulletDirY = Vector2.zero;
+                
+                
 
                 transform.localPosition = attack;
                 transform.eulerAngles = lowAttackRot;
+
+                AttackSet();
+                bulletScr.bulletDirY = Vector2.zero;
+
             }
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
             {
-                AttackSet();
-
-                bulletScr.bulletDirY = Vector2.up;
+                
 
                 transform.localPosition = attackUP;
                 transform.eulerAngles = upAttackRot;
+
+                AttackSet();
+                bulletScr.bulletDirY = Vector2.up;
             }
         }
 
@@ -89,28 +95,28 @@ public class Gun : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
-                AttackSet();
-
-                bulletScr.bulletDirY = Vector2.zero;
-
                 transform.localPosition = attack;
                 transform.eulerAngles = lowAttackRot;
+
+                AttackSet();
+                bulletScr.bulletDirY = Vector2.zero;
             }
             if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
             {
-                AttackSet();
-
-                bulletScr.bulletDirY = Vector2.up;
+                
 
                 transform.localPosition = attackUP;
                 transform.eulerAngles = thisPlayer.transform.localScale.x * upAttackRot;
+
+                AttackSet();
+                bulletScr.bulletDirY = Vector2.up;
             }
         }
     }
 
     void AttackSet()
     {
-        Instantiate(bullet, this.gameObject.transform.position, this.gameObject.transform.rotation, this.transform);
+        Instantiate(bullet, transform);
 
         bulletScr = GetComponentInChildren<Bullet>();
 

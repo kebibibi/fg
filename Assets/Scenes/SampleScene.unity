@@ -2163,6 +2163,7 @@ MonoBehaviour:
   dashForce: 30
   dashStamina: 3
   playerHealth: 100
+  dashTimer: 0
   fistDamage: 15
   abilityDamage: 25
 --- !u!1 &912921193
@@ -4085,6 +4086,7 @@ MonoBehaviour:
   dashForce: 30
   dashStamina: 3
   playerHealth: 100
+  dashTimer: 0
   fistDamage: 15
   abilityDamage: 25
 --- !u!1 &1509595653
