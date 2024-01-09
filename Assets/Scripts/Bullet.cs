@@ -7,13 +7,16 @@ public class Bullet : MonoBehaviour
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
 
-    Players playerEnemy;
+    public Players playerEnemy;
 
     float knockTimer;
     public float maxKnockT;
     public float bulletSpeed;
+    public float missTimer;
 
     bool knocked;
+
+    public Vector2 bulletDirY;
 
     Camera camera;
     public CameraFollow cam;
@@ -32,7 +35,8 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        rb2D.AddForce(Vector2.right * bulletSpeed, ForceMode2D.Impulse);
+        rb2D.AddForce(Vector2.right * bulletSpeed + bulletDirY/2, ForceMode2D.Impulse);
+
         Timers();
     }
 
@@ -48,6 +52,17 @@ public class Bullet : MonoBehaviour
             playerEnemy.enabled = true;
             cam.shakingMuch = 0;
             knocked = false;
+
+            Destroy(gameObject);
+        }
+
+        if(missTimer > 0)
+        {
+            missTimer -= Time.deltaTime;
+        }
+        if(missTimer < 0)
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -56,6 +71,7 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.CompareTag("Player1") || collision.gameObject.CompareTag("Player2"))
         {
             playerEnemy = collision.GetComponent<Players>();
+            playerEnemy = collision.GetComponentInParent<Players>(); 
 
             playerEnemy.enabled = false;
             playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;

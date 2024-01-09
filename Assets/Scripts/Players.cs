@@ -28,6 +28,7 @@ public class Players : MonoBehaviour
     bool facingRight = true;
     bool grounded;
     bool jump;
+    bool dash;
 
     public float fistDamage;
     public float abilityDamage;
@@ -56,14 +57,17 @@ public class Players : MonoBehaviour
 
         Controls();
 
-        Flip();
-
         EnemyDirection();
     }
 
     private void FixedUpdate()
     {
         Jumping();
+
+        Dash();
+
+        Flip();
+
         rb.velocity = new Vector2(horizontal * playerSpeed, rb.velocity.y);
     }
 
@@ -84,15 +88,13 @@ public class Players : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.D))
             {
-                float smoothSpeed = Mathf.Lerp(playerSpeed, maxSpeed, 0.02f);
-                playerSpeed = smoothSpeed;
                 horizontal = 1;
+                playerSpeed = maxSpeed;
             }
             else if (Input.GetKey(KeyCode.A))
             {
-                float smoothSpeed = Mathf.Lerp(playerSpeed, maxSpeed, 0.02f);
-                playerSpeed = smoothSpeed;
                 horizontal = -1;
+                playerSpeed = maxSpeed;
             }
             else
             {
@@ -106,9 +108,7 @@ public class Players : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.LeftShift) && dashStamina > 0 && playerSpeed > 0)
             {
-                playerSpeed = dashForce;
-                dashStamina--;
-                timer = 1;
+                dash = true;
             }
         }
 
@@ -117,15 +117,13 @@ public class Players : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Keypad6))
             {
-                float smoothSpeed = Mathf.Lerp(playerSpeed, maxSpeed, 0.02f);
-                playerSpeed = smoothSpeed;
                 horizontal = 1;
+                playerSpeed = maxSpeed;
             }
             else if (Input.GetKey(KeyCode.Keypad4))
             {
-                float smoothSpeed = Mathf.Lerp(playerSpeed, maxSpeed, 0.02f);
-                playerSpeed = smoothSpeed;
                 horizontal = -1;
+                playerSpeed = maxSpeed;
             }
             else
             {
@@ -139,10 +137,27 @@ public class Players : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.KeypadEnter) && dashStamina > 0 && playerSpeed > 0)
             {
-                playerSpeed = dashForce;
-                dashStamina--;
-                timer = 1;
+                dash = true;
             }
+        }
+    }
+
+    void Jumping()
+    {
+        if (jump)
+        {
+            rb.AddForce(transform.up * jumpingForce, ForceMode2D.Impulse);
+            jump = false;
+        }
+    }
+
+    void Dash()
+    {
+        if (dash)
+        {
+            playerSpeed = dashForce;
+            dashStamina--;
+            timer = 1;
         }
 
         if (dashStamina < 3)
@@ -156,15 +171,6 @@ public class Players : MonoBehaviour
                 dashStamina++;
                 timer = 1;
             }
-        }
-    }
-
-    void Jumping()
-    {
-        if (jump)
-        {
-            rb.AddForce(transform.up * jumpingForce, ForceMode2D.Impulse);
-            jump = false;
         }
     }
 

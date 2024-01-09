@@ -38,9 +38,7 @@ public class Gun : MonoBehaviour
         attack = new Vector2(1f, 0.4f);
         attackUP = new Vector2(1f, 1f);
 
-        bulletStart = new Vector2(0f, 0.075f);
-
-        upAttackRot = new Vector3(0, 0, -35);
+        upAttackRot = new Vector3(0, 0, 35);
         lowAttackRot = new Vector3(0, 0, 0);
 
         sprite.SetActive(false);
@@ -70,12 +68,16 @@ public class Gun : MonoBehaviour
             {
                 AttackSet();
 
+                bulletScr.bulletDirY = Vector2.zero;
+
                 transform.localPosition = attack;
                 transform.eulerAngles = lowAttackRot;
             }
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
             {
                 AttackSet();
+
+                bulletScr.bulletDirY = Vector2.up;
 
                 transform.localPosition = attackUP;
                 transform.eulerAngles = upAttackRot;
@@ -89,6 +91,8 @@ public class Gun : MonoBehaviour
             {
                 AttackSet();
 
+                bulletScr.bulletDirY = Vector2.zero;
+
                 transform.localPosition = attack;
                 transform.eulerAngles = lowAttackRot;
             }
@@ -96,8 +100,10 @@ public class Gun : MonoBehaviour
             {
                 AttackSet();
 
+                bulletScr.bulletDirY = Vector2.up;
+
                 transform.localPosition = attackUP;
-                transform.eulerAngles = upAttackRot;
+                transform.eulerAngles = thisPlayer.transform.localScale.x * upAttackRot;
             }
         }
     }
@@ -108,9 +114,9 @@ public class Gun : MonoBehaviour
 
         bulletScr = GetComponentInChildren<Bullet>();
 
-        bulletScr.bulletSpeed *= thisPlayer.enemyDir.x;
+        bulletScr.bulletSpeed *= thisPlayer.enemyDir.normalized.x;
 
-        bullet.transform.parent = null;
+        bulletScr.transform.parent = null;
 
         sprite.SetActive(true);
 
