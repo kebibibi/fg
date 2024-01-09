@@ -68,10 +68,17 @@ public class GameMenu : MonoBehaviour
 
     public void P1Gun()
     {
+<<<<<<< HEAD
         if(!p1Select)
         {
             Instantiate(gun, player1.transform);
             p1Select= true;
+=======
+        if (!p1Select)
+        {
+            Instantiate(gun, player1.transform);
+            p1Select = true;
+>>>>>>> 504856679024d6c932f609537acf8e500bc8c1fd
         }
     }
 
