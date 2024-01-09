@@ -19,7 +19,6 @@ public class GameMenu : MonoBehaviour
     Fists player2F;
 
     public GameObject staff;
-    public GameObject gun;
 
     bool p1Select;
     bool p2Select;
@@ -65,20 +64,14 @@ public class GameMenu : MonoBehaviour
             p2Select = true;
         }
     }
+<<<<<<< HEAD
 
     public void P1Gun()
     {
-<<<<<<< HEAD
         if(!p1Select)
         {
             Instantiate(gun, player1.transform);
             p1Select= true;
-=======
-        if (!p1Select)
-        {
-            Instantiate(gun, player1.transform);
-            p1Select = true;
->>>>>>> 504856679024d6c932f609537acf8e500bc8c1fd
         }
     }
 
@@ -90,4 +83,6 @@ public class GameMenu : MonoBehaviour
             p2Select = true;
         }
     }
+=======
+>>>>>>> parent of 5048566 (ihs)
 }
