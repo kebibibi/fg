@@ -8,7 +8,7 @@ public class Fists : MonoBehaviour
     public float maxAttackT;
     float cooldown;
     public float maxCooldown;
-    float knockTimer;
+    public float knockTimer;
     public float maxKnockT;
     public float shake;
 
@@ -115,27 +115,44 @@ public class Fists : MonoBehaviour
         }
         if (knockTimer < 0)
         {
-            knockTimer = maxKnockT;
             playerEnemy.enabled = true;
             cam.shakingMuch = 0;
             knocked = false;
+            knockTimer = maxKnockT;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        bool hurt;
+
         if (collision.gameObject.CompareTag("Player1") || collision.gameObject.CompareTag("Player2"))
         {
-            playerEnemy = collision.GetComponent<Players>();
+            if (collision.gameObject.transform.parent)
+            {
+                return;
+            }
+            else
+            {
+                hurt = true;
+            }
+            
+            if (hurt)
+            {
+                playerEnemy = collision.GetComponent<Players>();
 
-            playerEnemy.enabled = false;
-            playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-            playerEnemy.playerHealth -= playerEnemy.fistDamage;
+                playerEnemy.enabled = false;
+                playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
+                playerEnemy.playerHealth -= playerEnemy.fistDamage;
 
-            cam.shakingMuch = 0.2f;
+                cam.shakingMuch = 0.2f;
 
-            knockTimer = maxKnockT;
-            knocked = true;
+                knockTimer = maxKnockT;
+                knocked = true;
+
+                hurt = false;
+            }
+            
         }
     }
 }

@@ -41,16 +41,14 @@ public class Bullet : MonoBehaviour
 
     void Timers()
     {
-        if (knocked)
+        if (knockTimer > 0)
         {
             knockTimer -= Time.deltaTime;
         }
-        if (knockTimer < 0)
+        if (knockTimer <= 0)
         {
-            knockTimer = maxKnockT;
             playerEnemy.enabled = true;
             cam.shakingMuch = 0;
-            knocked = false;
 
             Destroy(gameObject);
         }
@@ -79,7 +77,6 @@ public class Bullet : MonoBehaviour
             cam.shakingMuch = 0.35f;
 
             knockTimer = maxKnockT;
-            knocked = true;
 
             sprite.enabled = false;
             bc2D.enabled = false;

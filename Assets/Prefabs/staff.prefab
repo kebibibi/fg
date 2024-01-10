@@ -99,8 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAttackT: 0.2
-  maxCooldown: 0.3
+  maxCooldown: 0.5
   maxKnockT: 0.4
+  thisPlayer: {fileID: 0}
   cam: {fileID: 0}
 --- !u!61 &8249862689670654325
 BoxCollider2D:

@@ -9,7 +9,7 @@ public class staffAttack : MonoBehaviour
     public float maxAttackT;
     float cooldown;
     public float maxCooldown;
-    float knockTimer;
+    public float knockTimer;
     public float maxKnockT;
 
     bool cooling;
@@ -131,10 +131,10 @@ public class staffAttack : MonoBehaviour
         }
         if (knockTimer < 0)
         {
-            knockTimer = maxKnockT;
             playerEnemy.enabled = true;
             cam.shakingMuch = 0;
             knocked = false;
+            knockTimer = maxKnockT;
         }
     }
 
@@ -152,7 +152,6 @@ public class staffAttack : MonoBehaviour
 
             knockTimer = maxKnockT;
             knocked = true;
-            bc2D.enabled = false;
         }
     }
 }

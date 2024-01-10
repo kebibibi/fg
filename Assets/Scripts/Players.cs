@@ -20,16 +20,19 @@ public class Players : MonoBehaviour
     [Range(-8, 8)]
     public float maxSpeed;
     public float jumpingForce;
-    public float dashForce;
-    public float dashStamina;
     public float playerHealth;
+
+    public float maxDashForce;
+    public float maxDashTimer;
+    public float dashStamina;
+    float dashForce;
     float dashRefreshTimer;
-    public float dashTimer;
+    float dashTimer;
 
     bool facingRight = true;
     bool grounded;
     bool jump;
-    bool dash;
+    bool dashing;
 
     public float fistDamage;
     public float abilityDamage;
@@ -63,13 +66,44 @@ public class Players : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Jumping();
+        float dashDir = dashForce * horizontal;
 
-        Dash();
+        Jumping();
 
         Flip();
 
-        rb.velocity = new Vector2(horizontal * playerSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(horizontal * playerSpeed /*+ dashDir*/, rb.velocity.y);
+
+        //dash
+        if (dashing)
+        {
+            if (dashTimer > 0)
+            {
+                dashTimer -= Time.deltaTime;
+                dashForce = maxDashForce;
+                rb.AddForce(Vector2.right * dashDir, ForceMode2D.Impulse);
+            }
+
+            if (dashTimer <= 0)
+            {
+                dashForce = 0;
+                dashRefreshTimer = 1;
+                dashing = false;
+            }
+        }
+
+        if (dashStamina < 3)
+        {
+            if (dashRefreshTimer > 0)
+            {
+                dashRefreshTimer -= Time.deltaTime;
+            }
+            else if (dashRefreshTimer <= 0)
+            {
+                dashStamina++;
+                dashRefreshTimer = 1;
+            }
+        }
     }
 
     void Health()
@@ -107,9 +141,11 @@ public class Players : MonoBehaviour
                 jump = true;
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftShift) && dashStamina > 0 && playerSpeed > 0)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && dashStamina > 0 && playerSpeed > 0 && !dashing)
             {
-                dash = true;
+                dashing = true;
+                dashTimer = maxDashTimer;
+                dashStamina--;
             }
         }
 
@@ -136,9 +172,11 @@ public class Players : MonoBehaviour
                 jump = true;
             }
 
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) && dashStamina > 0 && playerSpeed > 0)
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) && dashStamina > 0 && playerSpeed > 0 && !dashing)
             {
-                dash = true;
+                dashing = true;
+                dashTimer = maxDashTimer;
+                dashStamina--;
             }
         }
     }
@@ -149,39 +187,6 @@ public class Players : MonoBehaviour
         {
             rb.AddForce(transform.up * jumpingForce, ForceMode2D.Impulse);
             jump = false;
-        }
-    }
-
-    void Dash()
-    {
-        if (dash)
-        {
-            if (dashTimer > 0)
-            {
-                dashTimer -= Time.deltaTime;
-                playerSpeed = dashForce;
-            }
-
-            if(dashTimer <= 0)
-            {
-                playerSpeed = 0;
-                dashStamina--;
-                dashRefreshTimer = 1;
-                dash = false;
-            }
-        }
-
-        if (dashStamina < 3)
-        {
-            if (dashRefreshTimer > 0)
-            {
-                dashRefreshTimer -= Time.deltaTime;
-            }
-            else if (dashRefreshTimer <= 0)
-            {
-                dashStamina++;
-                dashRefreshTimer = 1;
-            }
         }
     }
 
@@ -210,12 +215,18 @@ public class Players : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        grounded = true;
+        if (!collision.gameObject.CompareTag("MainCamera"))
+        {
+            grounded = true;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        grounded = false;
+        if (!collision.gameObject.CompareTag("MainCamera"))
+        {
+            grounded = false;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)

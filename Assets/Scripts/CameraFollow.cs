@@ -14,7 +14,6 @@ public class CameraFollow : MonoBehaviour
 
     void FixedUpdate()
     {
-
         shake = Random.insideUnitSphere * shakingMuch;
 
         middle = Vector2.Lerp(player1.transform.position, player2.transform.position, 0.5f);

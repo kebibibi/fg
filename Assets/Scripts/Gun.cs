@@ -68,9 +68,6 @@ public class Gun : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
-                
-                
-
                 transform.localPosition = attack;
                 transform.eulerAngles = lowAttackRot;
 
@@ -80,8 +77,6 @@ public class Gun : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
             {
-                
-
                 transform.localPosition = attackUP;
                 transform.eulerAngles = upAttackRot;
 
@@ -103,8 +98,6 @@ public class Gun : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
             {
-                
-
                 transform.localPosition = attackUP;
                 transform.eulerAngles = thisPlayer.transform.localScale.x * upAttackRot;
 
