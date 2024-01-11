@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameMenu : MonoBehaviour
@@ -18,11 +19,21 @@ public class GameMenu : MonoBehaviour
     Fists player1F;
     Fists player2F;
 
+    Gun gunSprite1;
+    Gun gunSprite2;
+
     public GameObject staff;
     public GameObject gun;
+    public TMP_Text lockInText;
 
     bool p1Select;
     bool p2Select;
+    bool p1Locked;
+    public bool p2Locked;
+
+    string weaponString = "Weapon";
+    string lockedInText = "Locked in!";
+    string player2LockTxt = "Player 2 lock in?";
 
     public void GameOn()
     {
@@ -31,6 +42,12 @@ public class GameMenu : MonoBehaviour
         platforms.SetActive(true);
         bars.SetActive(true);
         gameMenu.SetActive(false);
+
+        gunSprite1 = player1M.GetComponentInChildren<Gun>();
+        gunSprite1.sprite.SetActive(false);
+
+        gunSprite2 = player2M.GetComponentInChildren<Gun>();
+        gunSprite2.sprite.SetActive(false);
     }
 
     void PlayersOn()
@@ -48,39 +65,84 @@ public class GameMenu : MonoBehaviour
         player2F.enabled = true;
     }
 
-    public void P1Staff()
+    public void Staff()
     {
-        if (!p1Select)
+        if (!p1Locked)
         {
+            DeselectWeapon();
+
+            p1Select = false;
             Instantiate(staff, player1.transform);
             p1Select = true;
         }
-    }
 
-    public void P2Staff()
-    {
-        if (!p2Select)
+        if (p1Locked && !p2Locked)
         {
+            lockInText.text = player2LockTxt;
+
+            DeselectWeapon();
+
+            p2Select = false;
             Instantiate(staff, player2.transform);
             p2Select = true;
         }
     }
 
-    public void P1Gun()
+    public void Gun()
     {
-        if(!p1Select)
+        if(!p1Locked)
         {
+            DeselectWeapon();
+
+            p1Select = false;
             Instantiate(gun, player1.transform);
             p1Select= true;
         }
-    }
-
-    public void P2Gun()
-    {
-        if (!p2Select)
+        if(p1Locked && !p2Locked)
         {
+            lockInText.text = player2LockTxt;
+
+            DeselectWeapon();
+
+            p2Select = false;
             Instantiate(gun, player2.transform);
             p2Select = true;
+        }
+    }
+
+    public void DeselectWeapon()
+    {
+        if (!p1Locked)
+        {
+            foreach (Transform child in player1.transform)
+            {
+                if (child.tag == weaponString)
+                    Destroy(child.gameObject);
+            }
+        }
+
+        if(p1Locked && !p2Locked)
+        {
+            foreach (Transform child in player2.transform)
+            {
+                if (child.tag == weaponString)
+                    Destroy(child.gameObject);
+            }
+        }
+    }
+
+    public void WeaponLock()
+    {
+        if (p1Select && !p1Locked)
+        {
+            lockInText.text = lockedInText;
+            p1Locked = true;
+        }
+
+        if (p2Select && p1Locked)
+        {
+            p2Locked = true;
+            lockInText.text = lockedInText;
         }
     }
 }

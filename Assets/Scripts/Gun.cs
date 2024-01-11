@@ -28,7 +28,7 @@ public class Gun : MonoBehaviour
 
     //hand color
     SpriteRenderer playerSprite;
-    SpriteRenderer gunSprite;
+    public SpriteRenderer gunSprite;
     public GameObject hand;
 
     Camera camera;
@@ -42,8 +42,6 @@ public class Gun : MonoBehaviour
 
         upAttackRot = new Vector3(0, 0, 30);
         lowAttackRot = new Vector3(0, 0, 0);
-
-        sprite.SetActive(false);
 
         camera = FindAnyObjectByType<Camera>();
         cam = camera.GetComponent<CameraFollow>();
@@ -77,11 +75,22 @@ public class Gun : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
             {
-                transform.localPosition = attackUP;
-                transform.eulerAngles = upAttackRot;
+                if (thisPlayer.facingRight)
+                {
+                    transform.localPosition = attackUP;
+                    transform.eulerAngles = upAttackRot;
 
-                AttackSet();
-                bulletScr.bulletDirY = Vector2.up;
+                    AttackSet();
+                    bulletScr.bulletDirY = Vector2.up;
+                }
+                else
+                {
+                    transform.localPosition = attackUP;
+                    transform.eulerAngles = -upAttackRot;
+
+                    AttackSet();
+                    bulletScr.bulletDirY = Vector2.up;
+                }
             }
         }
 
@@ -98,11 +107,22 @@ public class Gun : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
             {
-                transform.localPosition = attackUP;
-                transform.eulerAngles = thisPlayer.transform.localScale.x * upAttackRot;
+                if (thisPlayer.facingRight)
+                {
+                    transform.localPosition = attackUP;
+                    transform.eulerAngles = upAttackRot;
 
-                AttackSet();
-                bulletScr.bulletDirY = Vector2.up;
+                    AttackSet();
+                    bulletScr.bulletDirY = Vector2.up;
+                }
+                else
+                {
+                    transform.localPosition = attackUP;
+                    transform.eulerAngles = -upAttackRot;
+
+                    AttackSet();
+                    bulletScr.bulletDirY = Vector2.up;
+                }
             }
         }
     }

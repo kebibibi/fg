@@ -9,9 +9,8 @@ TagManager:
   - Player2
   - Fist1
   - Fist2
-  - Staff1
-  - Staff2
   - Platform
+  - Weapon
   layers:
   - Default
   - TransparentFX

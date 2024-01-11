@@ -5,7 +5,8 @@ using UnityEngine;
 public class Players : MonoBehaviour
 {
     public Rigidbody2D rb;
-    BoxCollider2D bc2D;
+    public BoxCollider2D collisionHitbox;
+    public BoxCollider2D triggerHitbox;
     public GameObject staminaBar;
     public GameObject healthBar;
 
@@ -29,7 +30,7 @@ public class Players : MonoBehaviour
     float dashRefreshTimer;
     float dashTimer;
 
-    bool facingRight = true;
+    public bool facingRight = true;
     bool grounded;
     bool jump;
     bool dashing;
@@ -37,24 +38,38 @@ public class Players : MonoBehaviour
     public float fistDamage;
     public float abilityDamage;
 
+    string player1 = "Player1";
+    string player2 = "Player2";
+    string maincamString = "MainCamera";
+    string platformString = "Platform";
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        bc2D = GetComponent<BoxCollider2D>();
     }
 
     void Update()
     {
-        if (this.gameObject.CompareTag("Player1"))
+        if (gameObject.CompareTag(player1))
         {
-            staminaBar.transform.localScale = new Vector3(dashStamina * 0.3f, staminaBar.transform.localScale.y);
-            healthBar.transform.localScale = new Vector3(playerHealth / 100, healthBar.transform.localScale.y);
+            staminaBar.transform.localScale = new Vector2(dashStamina * 0.3f, staminaBar.transform.localScale.y);
+            healthBar.transform.localScale = new Vector2(playerHealth / 100, healthBar.transform.localScale.y);
+
+            if (healthBar.transform.localScale.x <= 0)
+            {
+                healthBar.transform.localScale = new Vector2(0, healthBar.transform.localScale.y);
+            }
         }
 
-        if (this.gameObject.CompareTag("Player2"))
+        if (gameObject.CompareTag(player2))
         {
             staminaBar.transform.localScale = new Vector3(dashStamina * -0.3f, staminaBar.transform.localScale.y);
             healthBar.transform.localScale = new Vector3(playerHealth / -100, healthBar.transform.localScale.y);
+
+            if (healthBar.transform.localScale.x >= 0)
+            {
+                healthBar.transform.localScale = new Vector2(0, healthBar.transform.localScale.y);
+            }
         }
         
         Health();
@@ -108,7 +123,7 @@ public class Players : MonoBehaviour
 
     void Health()
     {
-        if (playerHealth < 0)
+        if (playerHealth <= 0 && healthBar.transform.localScale.x == 0)
         {
             fist = GetComponentInChildren<Fists>();
             fist.enabled = false;
@@ -119,7 +134,7 @@ public class Players : MonoBehaviour
     void Controls()
     {
         //player1 controls
-        if (this.gameObject.CompareTag("Player1"))
+        if (gameObject.CompareTag(player1))
         {
             if (Input.GetKey(KeyCode.D))
             {
@@ -150,7 +165,7 @@ public class Players : MonoBehaviour
         }
 
         //player2 controls
-        if (this.gameObject.CompareTag("Player2"))
+        if (gameObject.CompareTag(player2))
         {
             if (Input.GetKey(KeyCode.Keypad6))
             {
@@ -215,7 +230,7 @@ public class Players : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("MainCamera"))
+        if (!collision.gameObject.CompareTag(maincamString))
         {
             grounded = true;
         }
@@ -223,7 +238,7 @@ public class Players : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("MainCamera"))
+        if (!collision.gameObject.CompareTag(maincamString))
         {
             grounded = false;
         }
@@ -231,16 +246,17 @@ public class Players : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+        if (collision.gameObject.CompareTag(platformString))
         {
-            bc2D.enabled = false;
+            collisionHitbox.enabled = false;
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+        if (collision.gameObject.CompareTag(platformString))
         {
-            bc2D.enabled = true;
+            collisionHitbox.enabled = true;
         }
     }
 }

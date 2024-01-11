@@ -15,6 +15,7 @@ public class Fists : MonoBehaviour
     bool cooling;
     bool knocked;
     bool attacking;
+    bool hurt;
 
     Vector2 attack;
     Vector2 nAttack;
@@ -111,6 +112,7 @@ public class Fists : MonoBehaviour
 
         if (knocked)
         {
+            hurt = false;
             knockTimer -= Time.deltaTime;
         }
         if (knockTimer < 0)
@@ -124,17 +126,16 @@ public class Fists : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        bool hurt;
 
         if (collision.gameObject.CompareTag("Player1") || collision.gameObject.CompareTag("Player2"))
         {
-            if (collision.gameObject.transform.parent)
+            if (!collision.gameObject.transform.parent)
             {
-                return;
+                hurt = true;
             }
             else
             {
-                hurt = true;
+                return;
             }
             
             if (hurt)
@@ -149,8 +150,6 @@ public class Fists : MonoBehaviour
 
                 knockTimer = maxKnockT;
                 knocked = true;
-
-                hurt = false;
             }
             
         }

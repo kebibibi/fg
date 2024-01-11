@@ -21,6 +21,8 @@ public class staffAttack : MonoBehaviour
 
     Vector3 onBackRot;
     Vector3 onAttackRot;
+    Vector3 upAttackRot;
+    Vector3 lowAttackRot;
 
     Players playerEnemy;
     public Players thisPlayer;
@@ -29,6 +31,7 @@ public class staffAttack : MonoBehaviour
     public CameraFollow cam;
 
     BoxCollider2D bc2D;
+    Rigidbody2D rb2D;
     SpriteRenderer sprite;
 
     private void Start()
@@ -40,10 +43,15 @@ public class staffAttack : MonoBehaviour
         onBackRot = new Vector3(0, 0, 130);
         onAttackRot = new Vector3(0, 0, 0);
 
+        upAttackRot = new Vector3(0, 0, 30);
+        lowAttackRot = new Vector3(0, 0, 0);
+
         sprite = GetComponent<SpriteRenderer>();
 
         bc2D = GetComponent<BoxCollider2D>();
         bc2D.enabled = false;
+
+        rb2D = GetComponentInParent<Rigidbody2D>();
 
         thisPlayer = GetComponentInParent<Players>();
 
@@ -51,7 +59,7 @@ public class staffAttack : MonoBehaviour
         cam = camera.GetComponent<CameraFollow>();
 
         transform.eulerAngles = onBackRot;
-        sprite.sortingOrder = -1;
+        sprite.sortingOrder = -2;
     }
 
     void Update()
@@ -66,10 +74,12 @@ public class staffAttack : MonoBehaviour
 
     void Attack()
     {
+        
+
         //player1 controls
         if (thisPlayer.CompareTag("Player1"))
         {
-            if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling)
+            if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
                 transform.eulerAngles = onAttackRot;
                 sprite.sortingOrder = 1;
@@ -80,12 +90,37 @@ public class staffAttack : MonoBehaviour
                 cooldown = maxCooldown;
                 bc2D.enabled = true;
             }
+            if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
+            {
+                if (thisPlayer.facingRight)
+                {
+                    transform.eulerAngles = upAttackRot;
+                    sprite.sortingOrder = 1;
+
+                    attackTimer = maxAttackT;
+                    attacking = true;
+
+                    cooldown = maxCooldown;
+                    bc2D.enabled = true;
+                }
+                else
+                {
+                    transform.eulerAngles = -upAttackRot;
+                    sprite.sortingOrder = 1;
+
+                    attackTimer = maxAttackT;
+                    attacking = true;
+
+                    cooldown = maxCooldown;
+                    bc2D.enabled = true;
+                }
+            }
         }
 
         //player2 controls
         if (thisPlayer.CompareTag("Player2"))
         {
-            if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling)
+            if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
                 transform.eulerAngles = onAttackRot;
                 sprite.sortingOrder = 1;
@@ -95,6 +130,31 @@ public class staffAttack : MonoBehaviour
 
                 cooldown = maxCooldown;
                 bc2D.enabled = true;
+            }
+            if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
+            {
+                if (thisPlayer.facingRight)
+                {
+                    transform.eulerAngles = upAttackRot;
+                    sprite.sortingOrder = 1;
+
+                    attackTimer = maxAttackT;
+                    attacking = true;
+
+                    cooldown = maxCooldown;
+                    bc2D.enabled = true;
+                }
+                else
+                {
+                    transform.eulerAngles = -upAttackRot;
+                    sprite.sortingOrder = 1;
+
+                    attackTimer = maxAttackT;
+                    attacking = true;
+
+                    cooldown = maxCooldown;
+                    bc2D.enabled = true;
+                }
             }
         }
     }
@@ -103,11 +163,13 @@ public class staffAttack : MonoBehaviour
     {
         if (attacking)
         {
+            rb2D.isKinematic = true;
             transform.localScale = Vector2.MoveTowards(transform.localScale, attack, 3f);
             attackTimer -= Time.deltaTime;
         }
         if (attackTimer <= 0)
         {
+            rb2D.isKinematic = false;
             attacking = false;
             transform.localScale = Vector2.MoveTowards(transform.localScale, nAttack, 4f);
             bc2D.enabled = false;
