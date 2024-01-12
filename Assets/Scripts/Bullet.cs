@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
 
     public Players playerEnemy;
 
-    float knockTimer;
+    public float knockTimer;
     public float maxKnockT;
     public float bulletSpeed;
     public float missTimer;
@@ -31,6 +31,8 @@ public class Bullet : MonoBehaviour
         cam = camera.GetComponent<CameraFollow>();
 
         sprite = GetComponent<SpriteRenderer>();
+
+        knockTimer = maxKnockT;
     }
 
     private void FixedUpdate()
@@ -41,12 +43,13 @@ public class Bullet : MonoBehaviour
 
     void Timers()
     {
-        if (knockTimer > 0)
+        if (knockTimer > 0 && knocked)
         {
             knockTimer -= Time.deltaTime;
         }
         if (knockTimer <= 0)
         {
+            knocked = false;
             playerEnemy.enabled = true;
             cam.shakingMuch = 0;
 
@@ -57,7 +60,7 @@ public class Bullet : MonoBehaviour
         {
             missTimer -= Time.deltaTime;
         }
-        if(missTimer < 0)
+        if(missTimer < 0 && !knocked && knockTimer <= 0)
         {
             Destroy(gameObject);
         }
@@ -68,7 +71,6 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.CompareTag("Player1") || collision.gameObject.CompareTag("Player2"))
         {
             playerEnemy = collision.GetComponent<Players>();
-            playerEnemy = collision.GetComponentInParent<Players>(); 
 
             playerEnemy.enabled = false;
             playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
@@ -76,7 +78,7 @@ public class Bullet : MonoBehaviour
 
             cam.shakingMuch = 0.35f;
 
-            knockTimer = maxKnockT;
+            knocked = true;
 
             sprite.enabled = false;
             bc2D.enabled = false;

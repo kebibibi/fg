@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Tiger Style
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -208,8 +208,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -693,8 +693,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 19.5
+  m_fontSizeBase: 19.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2098,7 +2098,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 933029945}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1976512117}
+        m_TargetAssemblyTypeName: GameMenu, Assembly-CSharp
+        m_MethodName: Tiger
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &933029945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5327,16 +5339,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ba8781b26ab64ec1ba91e24249b04d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 852593054}
-  player2: {fileID: 1458807520}
   menu: {fileID: 1883808911}
   gameMenu: {fileID: 1976512115}
   bars: {fileID: 270450328}
   platforms: {fileID: 953242033}
   staff: {fileID: 7290924637290049571, guid: 46d01254d025b4101b70f19ae7903fa8, type: 3}
   gun: {fileID: 687284639341784231, guid: 7babf5f24965ee34fb091d74ff03f290, type: 3}
+  tigerStyle: {fileID: 2586736419844083157, guid: c6396670172304dfbb19d0f32c3ae23f, type: 3}
   lockInText: {fileID: 1970274941}
-  p2Locked: 0
+  thecolor:
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 1}
+    m_HighlightedColor: {r: 0.5686275, g: 0, b: 0, a: 1}
+    m_PressedColor: {r: 1, g: 0, b: 0, a: 1}
+    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 1}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.25
+  buttons:
+  - {fileID: 1428911802}
+  - {fileID: 1509595655}
+  - {fileID: 933029944}
+  bothPlayers:
+  - {fileID: 852593060}
+  - {fileID: 1458807527}
+  bothFists:
+  - {fileID: 1575893928}
+  - {fileID: 1162925199}
+  guns:
+  - {fileID: 0}
+  - {fileID: 0}
+  tiger:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1979955516
 GameObject:
   m_ObjectHideFlags: 0

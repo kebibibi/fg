@@ -172,8 +172,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerEnemy: {fileID: 0}
+  knockTimer: 0
   maxKnockT: 0.5
-  bulletSpeed: 10
+  bulletSpeed: 18
   missTimer: 1
   bulletDirY: {x: 0, y: 0}
   cam: {fileID: 0}
