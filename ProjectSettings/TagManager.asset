@@ -5,12 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Player1
-  - Player2
   - Fist1
   - Fist2
   - Platform
   - Weapon
+  - Player 1
+  - Player 2
   layers:
   - Default
   - TransparentFX

@@ -9,11 +9,31 @@ public class Players : MonoBehaviour
     public BoxCollider2D triggerHitbox;
     public GameObject staminaBar;
     public GameObject healthBar;
+    public GameObject modeBar;
+
+    bool thisPlayer1;
+    bool thisPlayer2;
 
     public GameObject playerEnemy;
     public Vector2 enemyDir;
 
+    Vector2 staminaScale;
+    Vector2 healthScale;
+    Vector2 deadScale;
+
     Fists fist;
+    public GameMaster master;
+
+    staffAttack staff;
+    bool staffMode;
+
+    Gun gun;
+    bool gunMode;
+
+    TigerStyle tiger;
+    bool tigerMode;
+
+    Vector2 modeScale;
 
     float horizontal;
     public float playerSpeed;
@@ -38,39 +58,45 @@ public class Players : MonoBehaviour
     public float fistDamage;
     public float abilityDamage;
 
-    string player1 = "Player1";
-    string player2 = "Player2";
+    string player1 = "Player 1";
+    string player2 = "Player 2";
     string maincamString = "MainCamera";
     string platformString = "Platform";
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        thisPlayer1 = gameObject.CompareTag(player1);
+        thisPlayer2 = gameObject.CompareTag(player2);
+
+        if (gameObject.transform.Find("staff(Clone)"))
+        {
+            staff = GetComponentInChildren<staffAttack>();
+            staffMode = true;
+        }
+
+        if (gameObject.transform.Find("Gun(Clone)"))
+        {
+            gun = GetComponentInChildren<Gun>();
+            gunMode = true;
+        }
+
+        if (gameObject.transform.Find("TigerStyle(Clone)"))
+        {
+            tiger = GetComponentInChildren<TigerStyle>();
+            tigerMode = true;
+        }
     }
 
     void Update()
     {
-        if (gameObject.CompareTag(player1))
-        {
-            staminaBar.transform.localScale = new Vector2(dashStamina * 0.3f, staminaBar.transform.localScale.y);
-            healthBar.transform.localScale = new Vector2(playerHealth / 100, healthBar.transform.localScale.y);
+        staminaScale = new Vector2(dashStamina * 0.3f, staminaBar.transform.localScale.y);
+        healthScale = new Vector2(playerHealth / 100, healthBar.transform.localScale.y);
 
-            if (healthBar.transform.localScale.x <= 0)
-            {
-                healthBar.transform.localScale = new Vector2(0, healthBar.transform.localScale.y);
-            }
-        }
+        deadScale = new Vector2(0, healthBar.transform.localScale.y);
 
-        if (gameObject.CompareTag(player2))
-        {
-            staminaBar.transform.localScale = new Vector3(dashStamina * -0.3f, staminaBar.transform.localScale.y);
-            healthBar.transform.localScale = new Vector3(playerHealth / -100, healthBar.transform.localScale.y);
-
-            if (healthBar.transform.localScale.x >= 0)
-            {
-                healthBar.transform.localScale = new Vector2(0, healthBar.transform.localScale.y);
-            }
-        }
+        StatusBars();
         
         Health();
 
@@ -99,7 +125,7 @@ public class Players : MonoBehaviour
                 rb.AddForce(Vector2.right * dashDir, ForceMode2D.Impulse);
             }
 
-            if (dashTimer <= 0)
+            else
             {
                 dashForce = 0;
                 dashRefreshTimer = 1;
@@ -113,7 +139,7 @@ public class Players : MonoBehaviour
             {
                 dashRefreshTimer -= Time.deltaTime;
             }
-            else if (dashRefreshTimer <= 0)
+            else
             {
                 dashStamina++;
                 dashRefreshTimer = 1;
@@ -121,20 +147,93 @@ public class Players : MonoBehaviour
         }
     }
 
+    void StatusBars()
+    {
+        if (thisPlayer1)
+        {
+            staminaBar.transform.localScale = staminaScale;
+            healthBar.transform.localScale = healthScale;
+
+            if (staffMode)
+            {
+                modeBar.transform.localScale = new Vector2(staff.cooldown * 0.2f, modeBar.transform.localScale.y);
+            }
+            if (gunMode)
+            {
+                modeBar.transform.localScale = new Vector2(gun.cooldown * 0.2f, modeBar.transform.localScale.y);
+            }
+            if (tigerMode)
+            {
+                modeBar.transform.localScale = new Vector2(tiger.modeTimer * 0.1f, modeBar.transform.localScale.y);
+            }
+
+            if (healthBar.transform.localScale.x <= 0)
+            {
+                healthBar.transform.localScale = deadScale;
+            }
+        }
+
+        if (thisPlayer2)
+        {
+            staminaBar.transform.localScale = -staminaScale;
+            healthBar.transform.localScale = -healthScale;
+
+            if (staffMode)
+            {
+                modeBar.transform.localScale = new Vector2(staff.cooldown * -0.2f, modeBar.transform.localScale.y);
+            }
+            if (gunMode)
+            {
+                modeBar.transform.localScale = new Vector2(gun.cooldown * -0.2f, modeBar.transform.localScale.y);
+            }
+            if (tigerMode)
+            {
+                modeBar.transform.localScale = new Vector2(tiger.modeTimer * -0.1f, modeBar.transform.localScale.y);
+            }
+
+            if (healthBar.transform.localScale.x >= 0)
+            {
+                healthBar.transform.localScale = deadScale;
+            }
+        }
+    }
+
     void Health()
     {
-        if (playerHealth <= 0 && healthBar.transform.localScale.x == 0)
+        bool roundOver;
+
+        if (playerHealth <= 0)
         {
-            fist = GetComponentInChildren<Fists>();
-            fist.enabled = false;
-            enabled = false;
+            roundOver = true;
+
+            if (thisPlayer1 && roundOver)
+            {
+                Debug.Log("Player 2 wins round");
+                master.player2Rounds++;
+                master.round++;
+                roundOver = false;
+            }
+            if (thisPlayer2 && roundOver)
+            {
+                Debug.Log("Player 1 wins round");
+                master.player1Rounds++;
+                master.round++;
+                roundOver = false;
+            }
+            if(thisPlayer1 && thisPlayer2 && roundOver)
+            {
+                Debug.Log("Draw");
+                master.player1Rounds++;
+                master.player2Rounds++;
+                roundOver = false;
+            }
         }
     }
 
     void Controls()
     {
         //player1 controls
-        if (gameObject.CompareTag(player1))
+        if (thisPlayer1)
         {
             if (Input.GetKey(KeyCode.D))
             {
@@ -165,7 +264,7 @@ public class Players : MonoBehaviour
         }
 
         //player2 controls
-        if (gameObject.CompareTag(player2))
+        if (thisPlayer2)
         {
             if (Input.GetKey(KeyCode.Keypad6))
             {

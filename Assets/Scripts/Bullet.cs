@@ -22,6 +22,9 @@ public class Bullet : MonoBehaviour
     public CameraFollow cam;
     SpriteRenderer sprite;
 
+    string player1 = "Player 1";
+    string player2 = "Player 2";
+
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -68,7 +71,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player1") || collision.gameObject.CompareTag("Player2"))
+        if (collision.gameObject.CompareTag(player1) || collision.gameObject.CompareTag(player2))
         {
             playerEnemy = collision.GetComponent<Players>();
 

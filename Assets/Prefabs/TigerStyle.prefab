@@ -334,7 +334,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites: {fileID: 1102867678755195739}
-  maxModeT: 10
+  Mode: 0
+  ModeTimer: 0
+  maxModeT: 9
   modeSpeed: 6
   modeDash: 20
   modeDamage: 5

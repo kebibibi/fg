@@ -269,7 +269,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAttackT: 0.2
-  maxCooldown: 0.5
+  cooldown: 0
+  maxCooldown: 4.5
   knockTimer: 0
   maxKnockT: 0.4
   thisPlayer: {fileID: 0}

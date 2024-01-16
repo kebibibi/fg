@@ -214,7 +214,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxAttackT: 0.8
-  maxCooldown: 0.8
+  cooldown: 0
+  maxCooldown: 4.5
   shake: 0.4
   sprite: {fileID: 5206827362101660351}
   bullet: {fileID: 8321073461896789028, guid: 42cbdb534e352402ba34686a45a04746, type: 3}

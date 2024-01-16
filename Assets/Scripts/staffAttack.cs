@@ -7,7 +7,7 @@ public class staffAttack : MonoBehaviour
 {
     float attackTimer;
     public float maxAttackT;
-    float cooldown;
+    public float cooldown;
     public float maxCooldown;
     public float knockTimer;
     public float maxKnockT;
@@ -33,6 +33,9 @@ public class staffAttack : MonoBehaviour
     BoxCollider2D bc2D;
     Rigidbody2D rb2D;
     SpriteRenderer sprite;
+
+    string player1 = "Player 1";
+    string player2 = "Player 2";
 
     private void Start()
     {
@@ -77,7 +80,7 @@ public class staffAttack : MonoBehaviour
         
 
         //player1 controls
-        if (thisPlayer.CompareTag("Player1"))
+        if (thisPlayer.CompareTag(player1))
         {
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
@@ -118,7 +121,7 @@ public class staffAttack : MonoBehaviour
         }
 
         //player2 controls
-        if (thisPlayer.CompareTag("Player2"))
+        if (thisPlayer.CompareTag(player2))
         {
             if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
@@ -184,6 +187,7 @@ public class staffAttack : MonoBehaviour
         }
         if (cooldown <= 0)
         {
+            cooldown = 0;
             cooling = false;
         }
 
@@ -202,7 +206,7 @@ public class staffAttack : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player1") || collision.gameObject.CompareTag("Player2"))
+        if (collision.gameObject.CompareTag(player1) || collision.gameObject.CompareTag(player2))
         {
             playerEnemy = collision.GetComponent<Players>();
 

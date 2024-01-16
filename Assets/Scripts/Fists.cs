@@ -26,6 +26,9 @@ public class Fists : MonoBehaviour
 
     public CameraFollow cam;
 
+    string player1 = "Player 1";
+    string player2 = "Player 2";
+
     private void Start()
     {
         attackTimer = 0;
@@ -127,7 +130,7 @@ public class Fists : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.gameObject.CompareTag("Player1") || collision.gameObject.CompareTag("Player2"))
+        if (collision.gameObject.CompareTag(player1) || collision.gameObject.CompareTag(player2))
         {
             if (!collision.gameObject.transform.parent)
             {

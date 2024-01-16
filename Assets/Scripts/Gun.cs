@@ -6,8 +6,10 @@ public class Gun : MonoBehaviour
 {
     float attackTimer;
     public float maxAttackT;
-    float cooldown;
+
+    public float cooldown;
     public float maxCooldown;
+
     public float shake;
 
     bool cooling;
@@ -34,6 +36,9 @@ public class Gun : MonoBehaviour
     Camera camera;
     public CameraFollow cam;
 
+    string player1 = "Player 1";
+    string player2 = "Player 2";
+
     private void Start()
     {
         attackTimer = 0;
@@ -51,6 +56,8 @@ public class Gun : MonoBehaviour
         gunSprite = hand.GetComponent<SpriteRenderer>();
         playerSprite = GetComponentInParent<SpriteRenderer>();
         gunSprite.color = playerSprite.color;
+
+        cooldown = maxCooldown;
     }
 
     private void Update()
@@ -62,7 +69,7 @@ public class Gun : MonoBehaviour
     void Attack()
     {
         //player1 controls
-        if (thisPlayer.CompareTag("Player1"))
+        if (thisPlayer.CompareTag(player1))
         {
             if (Input.GetKeyDown(KeyCode.Q) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
@@ -95,7 +102,7 @@ public class Gun : MonoBehaviour
         }
 
         //player2 controls
-        if (thisPlayer.CompareTag("Player2"))
+        if (thisPlayer.CompareTag(player2))
         {
             if (Input.GetKeyDown(KeyCode.Keypad9) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
             {
