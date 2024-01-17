@@ -14,16 +14,23 @@ public class Players : MonoBehaviour
     bool thisPlayer1;
     bool thisPlayer2;
 
+    //enemy
+
     public GameObject playerEnemy;
     public Vector2 enemyDir;
+    Players playerEnemyC;
+
+    //scales
 
     Vector2 staminaScale;
     Vector2 healthScale;
     Vector2 deadScale;
 
-    Fists fist;
+    public bool dead;
+
     public GameMaster master;
 
+    //weapons
     staffAttack staff;
     bool staffMode;
 
@@ -34,6 +41,8 @@ public class Players : MonoBehaviour
     bool tigerMode;
 
     Vector2 modeScale;
+
+    //playermovement
 
     float horizontal;
     public float playerSpeed;
@@ -47,16 +56,20 @@ public class Players : MonoBehaviour
     public float maxDashTimer;
     public float dashStamina;
     float dashForce;
-    float dashRefreshTimer;
+    public float dashRefreshTimer;
     float dashTimer;
 
     public bool facingRight = true;
     bool grounded;
     bool jump;
-    bool dashing;
+    public bool dashing;
+
+    //fist
 
     public float fistDamage;
     public float abilityDamage;
+
+    //text
 
     string player1 = "Player 1";
     string player2 = "Player 2";
@@ -66,6 +79,8 @@ public class Players : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        playerEnemyC = playerEnemy.GetComponent<Players>();
 
         thisPlayer1 = gameObject.CompareTag(player1);
         thisPlayer2 = gameObject.CompareTag(player2);
@@ -123,12 +138,12 @@ public class Players : MonoBehaviour
                 dashTimer -= Time.deltaTime;
                 dashForce = maxDashForce;
                 rb.AddForce(Vector2.right * dashDir, ForceMode2D.Impulse);
+                dashRefreshTimer = 1;
             }
 
             else
             {
                 dashForce = 0;
-                dashRefreshTimer = 1;
                 dashing = false;
             }
         }
@@ -200,33 +215,9 @@ public class Players : MonoBehaviour
 
     void Health()
     {
-        bool roundOver;
-
         if (playerHealth <= 0)
         {
-            roundOver = true;
-
-            if (thisPlayer1 && roundOver)
-            {
-                Debug.Log("Player 2 wins round");
-                master.player2Rounds++;
-                master.round++;
-                roundOver = false;
-            }
-            if (thisPlayer2 && roundOver)
-            {
-                Debug.Log("Player 1 wins round");
-                master.player1Rounds++;
-                master.round++;
-                roundOver = false;
-            }
-            if(thisPlayer1 && thisPlayer2 && roundOver)
-            {
-                Debug.Log("Draw");
-                master.player1Rounds++;
-                master.player2Rounds++;
-                roundOver = false;
-            }
+            dead = true;
         }
     }
 

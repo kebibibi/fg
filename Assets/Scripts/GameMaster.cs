@@ -25,7 +25,7 @@ public class GameMaster : MonoBehaviour
     public Vector2 p1Start;
     public Vector2 p2Start;
 
-    string winString = " wins";
+    string winString = " wins game";
 
     private void Start()
     {
@@ -38,7 +38,9 @@ public class GameMaster : MonoBehaviour
 
     void Update()
     {
-        if(lastRound != round)
+        PlayerHealths();
+
+        if (lastRound != round)
         {
             foreach (Players player in bothPlayers)
             {
@@ -51,7 +53,7 @@ public class GameMaster : MonoBehaviour
             betweenR = true;
         }
 
-        if(round == maxRounds)
+        if (round == maxRounds)
         {
             gameEnd = true;
             GameEnd();
@@ -59,13 +61,47 @@ public class GameMaster : MonoBehaviour
 
         if (betweenR && brTimer > 0)
         {
+            winText.enabled = true;
             brTimer -= Time.deltaTime;
         }
         if(brTimer <= 0 && !gameEnd)
         {
+            winText.enabled = false;
             betweenR = false;
             NewRound();
             brTimer = maxbrTimer;
+        }
+    }
+
+    void PlayerHealths()
+    {
+        if (bothPlayers[1].dead && bothPlayers[0].dead)
+        {
+            winText.text = "Round Draw";
+
+            round++;
+            player1Rounds++;
+            player2Rounds++;
+
+            bothPlayers[0].dead = false;
+            bothPlayers[1].dead = false;
+        }
+
+        if (bothPlayers[0].dead && !bothPlayers[1].dead)
+        {
+            winText.text = "P2 Wins Round";
+
+            round++;
+            player2Rounds++;
+            bothPlayers[0].dead = false;
+        }
+        if (bothPlayers[1].dead && !bothPlayers[0].dead)
+        {
+            winText.text = "P1 Wins Round";
+
+            round++;
+            player1Rounds++;
+            bothPlayers[1].dead = false;
         }
     }
 
@@ -96,7 +132,7 @@ public class GameMaster : MonoBehaviour
         }
         else if (player1Rounds == player2Rounds)
         {
-            winText.text = "Draw";
+            winText.text = "Game Draw";
         }
         else
         {

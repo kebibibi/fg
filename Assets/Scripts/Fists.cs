@@ -25,6 +25,7 @@ public class Fists : MonoBehaviour
     Players thisPlayer;
 
     public CameraFollow cam;
+    ParticleSystem ps;
 
     string player1 = "Player 1";
     string player2 = "Player 2";
@@ -38,6 +39,7 @@ public class Fists : MonoBehaviour
         nAttack = new Vector2(0.3f, 0.25f);
 
         thisPlayer = GetComponentInParent<Players>();
+        ps = GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -141,7 +143,7 @@ public class Fists : MonoBehaviour
                 return;
             }
             
-            if (hurt)
+            if (hurt && !thisPlayer.dashing)
             {
                 playerEnemy = collision.GetComponent<Players>();
 
@@ -153,8 +155,23 @@ public class Fists : MonoBehaviour
 
                 knockTimer = maxKnockT;
                 knocked = true;
+
+                ps.Play(true);
             }
-            
+
+            if (hurt && thisPlayer.dashing)
+            {
+                playerEnemy = collision.GetComponent<Players>();
+
+                playerEnemy.enabled = false;
+                playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
+                playerEnemy.playerHealth -= playerEnemy.abilityDamage;
+
+                cam.shakingMuch = 0.5f;
+
+                knockTimer = maxKnockT;
+                knocked = true;
+            }
         }
     }
 }
