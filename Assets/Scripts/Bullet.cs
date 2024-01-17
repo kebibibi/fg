@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
         bc2D = GetComponent<BoxCollider2D>();
 
-        camera = FindAnyObjectByType<Camera>();
+        camera = FindFirstObjectByType<Camera>();
         cam = camera.GetComponent<CameraFollow>();
 
         sprite = GetComponent<SpriteRenderer>();

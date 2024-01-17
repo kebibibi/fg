@@ -48,7 +48,7 @@ public class Gun : MonoBehaviour
         upAttackRot = new Vector3(0, 0, 30);
         lowAttackRot = new Vector3(0, 0, 0);
 
-        camera = FindAnyObjectByType<Camera>();
+        camera = FindFirstObjectByType<Camera>();
         cam = camera.GetComponent<CameraFollow>();
 
         thisPlayer = GetComponentInParent<Players>();

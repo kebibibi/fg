@@ -17,6 +17,6 @@ public class CameraFollow : MonoBehaviour
         shake = Random.insideUnitSphere * shakingMuch;
 
         middle = Vector2.Lerp(player1.transform.position, player2.transform.position, 0.5f);
-        transform.position = new Vector3(middle.x + shake.x, 7 + shake.y, -10);
+        transform.position = new Vector3(middle.x + shake.x, 10 + shake.y, -10);
     }
 }

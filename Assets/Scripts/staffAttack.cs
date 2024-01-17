@@ -58,7 +58,7 @@ public class staffAttack : MonoBehaviour
 
         thisPlayer = GetComponentInParent<Players>();
 
-        camera = FindAnyObjectByType<Camera>();
+        camera = FindFirstObjectByType<Camera>();
         cam = camera.GetComponent<CameraFollow>();
 
         transform.eulerAngles = onBackRot;

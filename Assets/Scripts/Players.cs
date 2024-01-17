@@ -18,7 +18,6 @@ public class Players : MonoBehaviour
 
     public GameObject playerEnemy;
     public Vector2 enemyDir;
-    Players playerEnemyC;
 
     //scales
 
@@ -39,8 +38,6 @@ public class Players : MonoBehaviour
 
     TigerStyle tiger;
     bool tigerMode;
-
-    Vector2 modeScale;
 
     //playermovement
 
@@ -76,33 +73,34 @@ public class Players : MonoBehaviour
     string maincamString = "MainCamera";
     string platformString = "Platform";
 
-    void Start()
+    private void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        playerEnemyC = playerEnemy.GetComponent<Players>();
+        //var staff = gameObject.transform.Find("staff(Clone)").GetComponentInChildren<staffAttack>();
 
-        thisPlayer1 = gameObject.CompareTag(player1);
-        thisPlayer2 = gameObject.CompareTag(player2);
-
-        if (gameObject.transform.Find("staff(Clone)"))
+        if (gameObject.transform.Find("staff(Clone)") == true)
         {
             staff = GetComponentInChildren<staffAttack>();
             staffMode = true;
         }
 
-        if (gameObject.transform.Find("Gun(Clone)"))
+        if (gameObject.transform.Find("Gun(Clone)") == true)
         {
             gun = GetComponentInChildren<Gun>();
             gunMode = true;
         }
 
-        if (gameObject.transform.Find("TigerStyle(Clone)"))
+        if (gameObject.transform.Find("TigerStyle(Clone)") == true)
         {
             tiger = GetComponentInChildren<TigerStyle>();
             tigerMode = true;
         }
+
+        thisPlayer1 = gameObject.CompareTag(player1);
+        thisPlayer2 = gameObject.CompareTag(player2);
     }
+
 
     void Update()
     {

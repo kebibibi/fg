@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Fists : MonoBehaviour
@@ -25,6 +26,8 @@ public class Fists : MonoBehaviour
     Players thisPlayer;
 
     public CameraFollow cam;
+
+    public TMP_Text damageText;
     ParticleSystem ps;
 
     string player1 = "Player 1";
@@ -147,6 +150,8 @@ public class Fists : MonoBehaviour
             {
                 playerEnemy = collision.GetComponent<Players>();
 
+                damageText.text = playerEnemy.fistDamage.ToString();
+
                 playerEnemy.enabled = false;
                 playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
                 playerEnemy.playerHealth -= playerEnemy.fistDamage;
@@ -163,6 +168,8 @@ public class Fists : MonoBehaviour
             {
                 playerEnemy = collision.GetComponent<Players>();
 
+                damageText.text = playerEnemy.abilityDamage.ToString();
+
                 playerEnemy.enabled = false;
                 playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
                 playerEnemy.playerHealth -= playerEnemy.abilityDamage;
@@ -171,6 +178,8 @@ public class Fists : MonoBehaviour
 
                 knockTimer = maxKnockT;
                 knocked = true;
+
+                ps.Play(true);
             }
         }
     }
