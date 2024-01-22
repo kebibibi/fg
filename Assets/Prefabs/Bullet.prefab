@@ -107,6 +107,7 @@ MonoBehaviour:
   maxKnockT: 0.5
   bulletSpeed: 18
   missTimer: 1
+  projectileDamage: 20
   bulletDirY: {x: 0, y: 0}
   cam: {fileID: 0}
   damageText: {fileID: 0}

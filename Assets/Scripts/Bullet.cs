@@ -16,6 +16,8 @@ public class Bullet : MonoBehaviour
     public float bulletSpeed;
     public float missTimer;
 
+    public float projectileDamage;
+
     bool knocked;
 
     public Vector2 bulletDirY;
@@ -88,11 +90,11 @@ public class Bullet : MonoBehaviour
         {
             playerEnemy = collision.GetComponent<Players>();
 
-            thisPlayer.damageText.text = thisPlayer.abilityDamage.ToString();
+            thisPlayer.damageText.text = projectileDamage.ToString();
 
             playerEnemy.enabled = false;
             playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-            playerEnemy.playerHealth -= thisPlayer.abilityDamage;
+            playerEnemy.playerHealth -= projectileDamage;
 
             cam.shakingMuch = 0.35f;
 

@@ -6,6 +6,8 @@ using TMPro;
 
 public class staffAttack : MonoBehaviour
 {
+    public WeaponClass _weaponClass;
+
     float attackTimer;
     public float maxAttackT;
     public float cooldown;
@@ -221,11 +223,11 @@ public class staffAttack : MonoBehaviour
         {
             playerEnemy = collision.GetComponent<Players>();
 
-            thisPlayer.damageText.text = thisPlayer.abilityDamage.ToString();
+            thisPlayer.damageText.text = _weaponClass.critDamage.ToString();
 
             playerEnemy.enabled = false;
             playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-            playerEnemy.playerHealth -= thisPlayer.abilityDamage;
+            playerEnemy.playerHealth -= _weaponClass.critDamage;
 
             cam.shakingMuch = 0.35f;
 

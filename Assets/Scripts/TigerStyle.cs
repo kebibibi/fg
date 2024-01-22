@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class TigerStyle : MonoBehaviour
 {
+    public WeaponClass _weaponClass;
+
     Players thisPlayer;
+    Fists _fists;
     SpriteRenderer playerSprite;
 
     public GameObject sprites;
@@ -16,7 +19,6 @@ public class TigerStyle : MonoBehaviour
 
     public float modeSpeed;
     public float modeDash;
-    public float modeDamage;
     public float modeJump;
 
     public SpriteRenderer[] sprite;
@@ -27,6 +29,8 @@ public class TigerStyle : MonoBehaviour
     private void OnEnable()
     {
         thisPlayer = GetComponentInParent<Players>();
+
+        _fists = thisPlayer.GetComponentInChildren<Fists>();
 
         playerSprite = GetComponentInParent<SpriteRenderer>();
 
@@ -86,7 +90,8 @@ public class TigerStyle : MonoBehaviour
 
         thisPlayer.maxSpeed += modeSpeed;
         thisPlayer.maxDashForce += modeDash;
-        thisPlayer.fistDamage += modeDamage;
+        _fists._weaponClass.damage += _weaponClass.damage;
+        _fists._weaponClass.critDamage += _weaponClass.critDamage;
         thisPlayer.jumpingForce += modeJump;
     }
 
@@ -94,7 +99,8 @@ public class TigerStyle : MonoBehaviour
     {
         thisPlayer.maxSpeed -= modeSpeed;
         thisPlayer.maxDashForce -= modeDash;
-        thisPlayer.fistDamage -= modeDamage;
+        _fists._weaponClass.damage -= _weaponClass.damage;
+        _fists._weaponClass.critDamage -= _weaponClass.critDamage;
         thisPlayer.jumpingForce -= modeJump;
         mode = false;
     }

@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Fists : MonoBehaviour
 {
+    public WeaponClass _weaponClass;
+
+    BoxCollider2D bc2D;
+
     //timers
     float attackTimer;
     public float maxAttackT;
@@ -49,6 +53,7 @@ public class Fists : MonoBehaviour
     {
         attackTimer = 0;
         knockTimer = maxKnockT;
+
         attack = new Vector2(1.25f, 0.25f);
         attackUP = new Vector2(1.25f, 1f);
         nAttack = new Vector2(0.3f, 0.25f);
@@ -56,6 +61,9 @@ public class Fists : MonoBehaviour
         thisPlayer = GetComponentInParent<Players>();
         damageCount = GetComponent<ParticleSystem>();
         audios = GetComponent<AudioSource>();
+        bc2D = GetComponent<BoxCollider2D>();
+        bc2D.enabled = false;
+
     }
 
     void Update()
@@ -73,38 +81,48 @@ public class Fists : MonoBehaviour
         //player1 controls
         if (this.gameObject.CompareTag("Fist1"))
         {
-            if (Input.GetKeyDown(KeyCode.E) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
+            if (Input.GetKeyDown(KeyCode.E) && attackTimer <= 0f && !cooling)
             {
-                transform.localPosition = attack;
-                attackTimer = maxAttackT;
-                attacking = true;
-                cooldown = maxCooldown;
-            }
-            if (Input.GetKeyDown(KeyCode.E) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
-            {
-                transform.localPosition = attackUP;
-                attackTimer = maxAttackT;
-                attacking = true;
-                cooldown = maxCooldown;
+                if(thisPlayer.enemyDir.y < 1)
+                {
+                    bc2D.enabled = true;
+                    transform.localPosition = attack;
+                    attackTimer = maxAttackT;
+                    attacking = true;
+                    cooldown = maxCooldown;
+                }
+                else if(thisPlayer.enemyDir.y > 1)
+                {
+                    bc2D.enabled = true;
+                    transform.localPosition = attackUP;
+                    attackTimer = maxAttackT;
+                    attacking = true;
+                    cooldown = maxCooldown;
+                }
             }
         }
 
         //player2 controls
         if (this.gameObject.CompareTag("Fist2"))
         {
-            if (Input.GetKeyDown(KeyCode.Keypad7) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y < 1)
+            if (Input.GetKeyDown(KeyCode.Keypad7) && attackTimer <= 0f && !cooling)
             {
-                transform.localPosition = attack;
-                attackTimer = maxAttackT;
-                attacking = true;
-                cooldown = maxCooldown;
-            }
-            if (Input.GetKeyDown(KeyCode.Keypad7) && attackTimer <= 0f && !cooling && thisPlayer.enemyDir.y > 1)
-            {
-                transform.localPosition = attackUP;
-                attackTimer = maxAttackT;
-                attacking = true;
-                cooldown = maxCooldown;
+                if (thisPlayer.enemyDir.y < 1)
+                {
+                    bc2D.enabled = true;
+                    transform.localPosition = attack;
+                    attackTimer = maxAttackT;
+                    attacking = true;
+                    cooldown = maxCooldown;
+                }
+                else if (thisPlayer.enemyDir.y > 1)
+                {
+                    bc2D.enabled = true;
+                    transform.localPosition = attackUP;
+                    attackTimer = maxAttackT;
+                    attacking = true;
+                    cooldown = maxCooldown;
+                }
             }
         }
     }
@@ -117,6 +135,7 @@ public class Fists : MonoBehaviour
         }
         if (attackTimer < 0)
         {
+            bc2D.enabled = false;
             attacking = false;
             transform.localPosition = nAttack;
             cooling = true;
@@ -163,11 +182,11 @@ public class Fists : MonoBehaviour
             {
                 playerEnemy = collision.GetComponent<Players>();
 
-                thisPlayer.damageText.text = thisPlayer.fistDamage.ToString();
+                thisPlayer.damageText.text = _weaponClass.damage.ToString();
 
                 playerEnemy.enabled = false;
                 playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-                playerEnemy.playerHealth -= thisPlayer.fistDamage;
+                playerEnemy.playerHealth -= _weaponClass.damage;
 
                 cam.shakingMuch = 0.2f;
 
@@ -186,11 +205,11 @@ public class Fists : MonoBehaviour
             {
                 playerEnemy = collision.GetComponent<Players>();
 
-                thisPlayer.damageText.text = thisPlayer.abilityDamage.ToString();
+                thisPlayer.damageText.text = _weaponClass.critDamage.ToString();
 
                 playerEnemy.enabled = false;
                 playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-                playerEnemy.playerHealth -= thisPlayer.abilityDamage;
+                playerEnemy.playerHealth -= _weaponClass.critDamage;
 
                 cam.shakingMuch = 0.5f;
 

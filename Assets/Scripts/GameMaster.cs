@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour
 {
     int lastRound;
     public int round;
+
     public int player1Rounds;
     public int player2Rounds;
+    public TMP_Text p1roundsT;
+    public TMP_Text p2roundsT;
+
     [Range(1, 100)]
     public int maxRounds;
 
@@ -42,6 +47,9 @@ public class GameMaster : MonoBehaviour
 
         if (lastRound != round)
         {
+            p1roundsT.text = player1Rounds.ToString();
+            p2roundsT.text = player2Rounds.ToString();
+
             foreach (Players player in bothPlayers)
             {
                 fist = player.GetComponentInChildren<Fists>();
@@ -122,6 +130,7 @@ public class GameMaster : MonoBehaviour
             player.rb.constraints = RigidbodyConstraints2D.None;
             player.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             player.playerHealth = 100;
+            player.dashStamina = 3;
         }
     }
 

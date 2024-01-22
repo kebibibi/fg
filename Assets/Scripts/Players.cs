@@ -7,7 +7,6 @@ public class Players : MonoBehaviour
 {
     public Rigidbody2D rb;
     public BoxCollider2D collisionHitbox;
-    public BoxCollider2D triggerHitbox;
     public ParticleSystem particles;
     AudioSource audios;
 
@@ -48,7 +47,7 @@ public class Players : MonoBehaviour
     float horizontal;
     public float playerSpeed;
 
-    [Range(-8, 8)]
+    [Range(-14, 14)]
     public float maxSpeed;
     public float jumpingForce;
     public float playerHealth;
@@ -56,19 +55,14 @@ public class Players : MonoBehaviour
     public float maxDashForce;
     public float maxDashTimer;
     public float dashStamina;
-    float dashForce;
+    public float dashForce;
     public float dashRefreshTimer;
     float dashTimer;
 
     public bool facingRight = true;
-    bool grounded;
+    public bool grounded;
     bool jump;
     public bool dashing;
-
-    //fist
-
-    public float fistDamage;
-    public float abilityDamage;
 
     //text
 
@@ -342,17 +336,17 @@ public class Players : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D trigger)
     {
-        if (collision.gameObject.CompareTag(platformString))
+        if (trigger.gameObject.CompareTag(platformString))
         {
             collisionHitbox.enabled = false;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D trigger)
     {
-        if (collision.gameObject.CompareTag(platformString))
+        if (trigger.gameObject.CompareTag(platformString))
         {
             collisionHitbox.enabled = true;
         }
