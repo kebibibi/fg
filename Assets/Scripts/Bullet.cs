@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Bullet : MonoBehaviour
 {
     Rigidbody2D rb2D;
     BoxCollider2D bc2D;
 
+    Players thisPlayer;
     public Players playerEnemy;
 
     public float knockTimer;
@@ -22,18 +24,29 @@ public class Bullet : MonoBehaviour
     public CameraFollow cam;
     SpriteRenderer sprite;
 
+    ParticleSystem damageCount;
+    public TMP_Text damageText;
+
+    AudioSource audios;
+    public AudioClip[] abilityHitSounds;
+    int randomAbHitClip;
+
     string player1 = "Player 1";
     string player2 = "Player 2";
 
-    private void Start()
+    private void OnEnable()
     {
         rb2D = GetComponent<Rigidbody2D>();
         bc2D = GetComponent<BoxCollider2D>();
+        thisPlayer = GetComponentInParent<Players>();
 
         camera = FindFirstObjectByType<Camera>();
         cam = camera.GetComponent<CameraFollow>();
 
         sprite = GetComponent<SpriteRenderer>();
+
+        audios = GetComponent<AudioSource>();
+        damageCount = GetComponent<ParticleSystem>();
 
         knockTimer = maxKnockT;
     }
@@ -75,9 +88,11 @@ public class Bullet : MonoBehaviour
         {
             playerEnemy = collision.GetComponent<Players>();
 
+            thisPlayer.damageText.text = thisPlayer.abilityDamage.ToString();
+
             playerEnemy.enabled = false;
             playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-            playerEnemy.playerHealth -= playerEnemy.abilityDamage;
+            playerEnemy.playerHealth -= thisPlayer.abilityDamage;
 
             cam.shakingMuch = 0.35f;
 
@@ -85,6 +100,19 @@ public class Bullet : MonoBehaviour
 
             sprite.enabled = false;
             bc2D.enabled = false;
+
+            RandomClip();
+
+            audios.clip = abilityHitSounds[randomAbHitClip];
+            audios.Play();
+
+            damageCount.Play();
+            playerEnemy.particles.Play(false);
         }
+    }
+
+    void RandomClip()
+    {
+        randomAbHitClip = Random.Range(0, 2);
     }
 }

@@ -24,7 +24,7 @@ public class TigerStyle : MonoBehaviour
     string player1 = "Player 1";
     string player2 = "Player 2";
 
-    private void Start()
+    private void OnEnable()
     {
         thisPlayer = GetComponentInParent<Players>();
 

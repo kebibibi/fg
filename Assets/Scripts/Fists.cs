@@ -5,35 +5,47 @@ using UnityEngine;
 
 public class Fists : MonoBehaviour
 {
+    //timers
     float attackTimer;
     public float maxAttackT;
     float cooldown;
     public float maxCooldown;
-    public float knockTimer;
+    float knockTimer;
     public float maxKnockT;
-    public float shake;
 
+    //statuses
     bool cooling;
     bool knocked;
     bool attacking;
     bool hurt;
 
+    //fist positions
     Vector2 attack;
     Vector2 nAttack;
     Vector2 attackUP;
 
+    //players
     Players playerEnemy;
     Players thisPlayer;
 
+    //camera
     public CameraFollow cam;
 
-    public TMP_Text damageText;
-    ParticleSystem ps;
+    //damage count text
+    ParticleSystem damageCount;
 
+    //audios
+    AudioSource audios;
+    public AudioClip[] hitSounds;
+    public AudioClip[] dashHitSounds;
+    int randomHitClip;
+    int randomDHitClip;
+
+    //texts
     string player1 = "Player 1";
     string player2 = "Player 2";
 
-    private void Start()
+    private void OnEnable()
     {
         attackTimer = 0;
         knockTimer = maxKnockT;
@@ -42,7 +54,8 @@ public class Fists : MonoBehaviour
         nAttack = new Vector2(0.3f, 0.25f);
 
         thisPlayer = GetComponentInParent<Players>();
-        ps = GetComponent<ParticleSystem>();
+        damageCount = GetComponent<ParticleSystem>();
+        audios = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -143,44 +156,61 @@ public class Fists : MonoBehaviour
             }
             else
             {
-                return;
+                hurt = false;
             }
             
             if (hurt && !thisPlayer.dashing)
             {
                 playerEnemy = collision.GetComponent<Players>();
 
-                damageText.text = playerEnemy.fistDamage.ToString();
+                thisPlayer.damageText.text = thisPlayer.fistDamage.ToString();
 
                 playerEnemy.enabled = false;
                 playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-                playerEnemy.playerHealth -= playerEnemy.fistDamage;
+                playerEnemy.playerHealth -= thisPlayer.fistDamage;
 
                 cam.shakingMuch = 0.2f;
 
                 knockTimer = maxKnockT;
                 knocked = true;
 
-                ps.Play(true);
+                RandomClip();
+
+                audios.clip = hitSounds[randomHitClip];
+                audios.Play();
+
+                damageCount.Play();
             }
 
             if (hurt && thisPlayer.dashing)
             {
                 playerEnemy = collision.GetComponent<Players>();
 
-                damageText.text = playerEnemy.abilityDamage.ToString();
+                thisPlayer.damageText.text = thisPlayer.abilityDamage.ToString();
 
                 playerEnemy.enabled = false;
                 playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-                playerEnemy.playerHealth -= playerEnemy.abilityDamage;
+                playerEnemy.playerHealth -= thisPlayer.abilityDamage;
 
                 cam.shakingMuch = 0.5f;
 
                 knockTimer = maxKnockT;
                 knocked = true;
 
-                ps.Play(true);
+                RandomClip();
+
+                audios.clip = dashHitSounds[randomDHitClip];
+                audios.Play();
+
+                damageCount.Play();
+                playerEnemy.particles.Play(false);
             }
         }
+    }
+
+    void RandomClip()
+    {
+        randomHitClip = Random.Range(0, 3);
+        randomDHitClip = Random.Range(0, 2);
     }
 }

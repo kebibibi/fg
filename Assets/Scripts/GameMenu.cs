@@ -81,47 +81,50 @@ public class GameMenu : MonoBehaviour
 
     public void GameOn()
     {
-        PlayersOn();
+        if(p1Locked && p2Locked)
+        {
+            PlayersOn();
 
-        platforms.SetActive(true);
-        bars.SetActive(true);
-        gameMenu.SetActive(false);
+            platforms.SetActive(true);
+            bars.SetActive(true);
+            gameMenu.SetActive(false);
 
-        if (sStaff1)
-        {
-            staffs[0] = bothPlayers[0].GetComponentInChildren<staffAttack>();
-            staffs[0].enabled = true;
-        }
-        if (sStaff2)
-        {
-            staffs[1] = bothPlayers[1].GetComponentInChildren<staffAttack>();
-            staffs[1].enabled = true;
-        }
+            if (sStaff1)
+            {
+                staffs[0] = bothPlayers[0].GetComponentInChildren<staffAttack>();
+                staffs[0].enabled = true;
+            }
+            if (sStaff2)
+            {
+                staffs[1] = bothPlayers[1].GetComponentInChildren<staffAttack>();
+                staffs[1].enabled = true;
+            }
 
-        if (sGun1)
-        {
-            guns[0] = bothPlayers[0].GetComponentInChildren<Gun>();
-            guns[0].enabled = true;
-            guns[0].sprite.SetActive(false);
-        }
-        if (sGun2)
-        {
-            guns[1] = bothPlayers[1].GetComponentInChildren<Gun>();
-            guns[1].enabled = true;
-            guns[1].sprite.SetActive(false);
-        }
+            if (sGun1)
+            {
+                guns[0] = bothPlayers[0].GetComponentInChildren<Gun>();
+                guns[0].enabled = true;
+                guns[0].sprite.SetActive(false);
+            }
+            if (sGun2)
+            {
+                guns[1] = bothPlayers[1].GetComponentInChildren<Gun>();
+                guns[1].enabled = true;
+                guns[1].sprite.SetActive(false);
+            }
 
-        if (sTiger1)
-        {
-            tiger[0] = bothPlayers[0].GetComponentInChildren<TigerStyle>();
-            tiger[0].enabled = true;
-            tiger[0].sprites.SetActive(false);
-        }
-        if (sTiger2)
-        {
-            tiger[1] = bothPlayers[1].GetComponentInChildren<TigerStyle>();
-            tiger[1].enabled = true;
-            tiger[1].sprites.SetActive(false);
+            if (sTiger1)
+            {
+                tiger[0] = bothPlayers[0].GetComponentInChildren<TigerStyle>();
+                tiger[0].enabled = true;
+                tiger[0].sprites.SetActive(false);
+            }
+            if (sTiger2)
+            {
+                tiger[1] = bothPlayers[1].GetComponentInChildren<TigerStyle>();
+                tiger[1].enabled = true;
+                tiger[1].sprites.SetActive(false);
+            }
         }
 
     }
@@ -273,7 +276,7 @@ public class GameMenu : MonoBehaviour
 
     public void WeaponLock()
     {
-        if (p1Select && !p1Locked)
+        if (!p1Locked)
         {
             lockInText.text = lockedInText;
             p1Locked = true;
@@ -286,7 +289,7 @@ public class GameMenu : MonoBehaviour
             }
         }
 
-        if (p2Select && p1Locked)
+        else if (p1Locked)
         {
             p2Locked = true;
             lockInText.text = lockedInText;

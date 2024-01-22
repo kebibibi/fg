@@ -334,12 +334,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites: {fileID: 1102867678755195739}
-  Mode: 0
-  ModeTimer: 0
+  mode: 0
+  modeTimer: 0
   maxModeT: 9
   modeSpeed: 6
   modeDash: 20
-  modeDamage: 5
+  modeDamage: 10
   modeJump: 6
   sprite:
   - {fileID: 4061919173190329365}

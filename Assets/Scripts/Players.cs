@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Players : MonoBehaviour
 {
     public Rigidbody2D rb;
     public BoxCollider2D collisionHitbox;
     public BoxCollider2D triggerHitbox;
+    public ParticleSystem particles;
+    AudioSource audios;
+
     public GameObject staminaBar;
     public GameObject healthBar;
     public GameObject modeBar;
@@ -68,6 +72,8 @@ public class Players : MonoBehaviour
 
     //text
 
+    public TMP_Text damageText;
+
     string player1 = "Player 1";
     string player2 = "Player 2";
     string maincamString = "MainCamera";
@@ -76,6 +82,8 @@ public class Players : MonoBehaviour
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
+        particles = GetComponent<ParticleSystem>();
+        audios = GetComponent<AudioSource>();
 
         //var staff = gameObject.transform.Find("staff(Clone)").GetComponentInChildren<staffAttack>();
 
@@ -246,6 +254,7 @@ public class Players : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.LeftShift) && dashStamina > 0 && playerSpeed > 0 && !dashing)
             {
+                audios.Play();
                 dashing = true;
                 dashTimer = maxDashTimer;
                 dashStamina--;
@@ -277,6 +286,7 @@ public class Players : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.KeypadEnter) && dashStamina > 0 && playerSpeed > 0 && !dashing)
             {
+                audios.Play();
                 dashing = true;
                 dashTimer = maxDashTimer;
                 dashStamina--;

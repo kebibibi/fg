@@ -22,8 +22,8 @@ public class GameMaster : MonoBehaviour
     public Players[] bothPlayers;
     Fists fist;
 
-    public Vector2 p1Start;
-    public Vector2 p2Start;
+    Vector2 p1Start;
+    Vector2 p2Start;
 
     string winString = " wins game";
 
@@ -48,6 +48,7 @@ public class GameMaster : MonoBehaviour
                 fist.enabled = false;
 
                 player.enabled = false;
+                player.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
             }
 
             betweenR = true;
@@ -118,6 +119,8 @@ public class GameMaster : MonoBehaviour
             fist.enabled = true;
 
             player.enabled = true;
+            player.rb.constraints = RigidbodyConstraints2D.None;
+            player.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             player.playerHealth = 100;
         }
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using TMPro;
 
 public class staffAttack : MonoBehaviour
 {
@@ -34,6 +35,13 @@ public class staffAttack : MonoBehaviour
     Rigidbody2D rb2D;
     SpriteRenderer sprite;
 
+    ParticleSystem damageCount;
+    public TMP_Text damageText;
+
+    AudioSource audios;
+    public AudioClip[] abilityHitSounds;
+    int randomAbHitClip;
+
     string player1 = "Player 1";
     string player2 = "Player 2";
 
@@ -60,6 +68,9 @@ public class staffAttack : MonoBehaviour
 
         camera = FindFirstObjectByType<Camera>();
         cam = camera.GetComponent<CameraFollow>();
+
+        audios = GetComponent<AudioSource>();
+        damageCount = GetComponent<ParticleSystem>();
 
         transform.eulerAngles = onBackRot;
         sprite.sortingOrder = -2;
@@ -210,14 +221,29 @@ public class staffAttack : MonoBehaviour
         {
             playerEnemy = collision.GetComponent<Players>();
 
+            thisPlayer.damageText.text = thisPlayer.abilityDamage.ToString();
+
             playerEnemy.enabled = false;
             playerEnemy.rb.velocity = playerEnemy.enemyDir.normalized * -35;
-            playerEnemy.playerHealth -= playerEnemy.abilityDamage;
+            playerEnemy.playerHealth -= thisPlayer.abilityDamage;
 
             cam.shakingMuch = 0.35f;
 
             knockTimer = maxKnockT;
             knocked = true;
+
+            RandomClip();
+
+            audios.clip = abilityHitSounds[randomAbHitClip];
+            audios.Play();
+
+            damageCount.Play();
+            playerEnemy.particles.Play(false);
         }
+    }
+
+    void RandomClip()
+    {
+        randomAbHitClip = Random.Range(0, 2);
     }
 }
