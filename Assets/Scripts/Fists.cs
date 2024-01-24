@@ -54,9 +54,9 @@ public class Fists : MonoBehaviour
         attackTimer = 0;
         knockTimer = maxKnockT;
 
-        attack = new Vector2(1.25f, 0.25f);
+        attack = new Vector2(0.545f, 0.144f);
         attackUP = new Vector2(1.25f, 1f);
-        nAttack = new Vector2(0.3f, 0.25f);
+        nAttack = new Vector2(0.188f, 0.144f);
 
         thisPlayer = GetComponentInParent<Players>();
         damageCount = GetComponent<ParticleSystem>();
