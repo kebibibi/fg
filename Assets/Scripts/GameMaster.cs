@@ -136,19 +136,17 @@ public class GameMaster : MonoBehaviour
 
     void GameEnd()
     {
-        winText.enabled = true;
-
         if (player1Rounds < player2Rounds)
         {
-            winText.text = bothPlayers[1].tag + winString;
+            SceneManager.LoadScene("P2Win");
         }
         else if (player1Rounds == player2Rounds)
         {
-            winText.text = "Game Draw";
+            SceneManager.LoadScene("Draw");
         }
         else
         {
-            winText.text = bothPlayers[0].tag + winString;
+            SceneManager.LoadScene("P1Win");
         }
     }
 }
