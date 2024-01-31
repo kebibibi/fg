@@ -45,6 +45,9 @@ public class Fists : MonoBehaviour
     int randomHitClip;
     int randomDHitClip;
 
+    //Animation
+    public Animator anim;
+
     //texts
     string player1 = "Player 1";
     string player2 = "Player 2";
@@ -90,6 +93,7 @@ public class Fists : MonoBehaviour
                     attackTimer = maxAttackT;
                     attacking = true;
                     cooldown = maxCooldown;
+                    anim.SetTrigger("Punch");
                 }
                 else if(thisPlayer.enemyDir.y > 1)
                 {
@@ -114,6 +118,7 @@ public class Fists : MonoBehaviour
                     attackTimer = maxAttackT;
                     attacking = true;
                     cooldown = maxCooldown;
+                    anim.SetTrigger("Punch");
                 }
                 else if (thisPlayer.enemyDir.y > 1)
                 {
@@ -139,6 +144,7 @@ public class Fists : MonoBehaviour
             attacking = false;
             transform.localPosition = nAttack;
             cooling = true;
+            anim.ResetTrigger("Punch");
         }
 
         if (cooling && cooldown >= 0)

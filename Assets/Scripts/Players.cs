@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Players : MonoBehaviour
 {
@@ -64,6 +65,9 @@ public class Players : MonoBehaviour
     bool jump;
     public bool dashing;
 
+    //animation
+    public Animator anim;
+
     //text
 
     public TMP_Text damageText;
@@ -110,6 +114,18 @@ public class Players : MonoBehaviour
         healthScale = new Vector2(playerHealth / 100, healthBar.transform.localScale.y);
 
         deadScale = new Vector2(0, healthBar.transform.localScale.y);
+
+        if (playerSpeed == 0)
+        {
+            anim.ResetTrigger("Walking");
+            anim.SetTrigger("Idle");
+        }
+
+        if(playerSpeed != 0 && !dashing)
+        {
+            anim.ResetTrigger("Idle");
+            anim.SetTrigger("Walking");
+        }
 
         StatusBars();
         
